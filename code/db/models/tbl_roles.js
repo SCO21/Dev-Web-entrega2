@@ -1,6 +1,6 @@
 function model(sequelize, DataTypes) {
   const attributes = {
-    name:        { type: DataTypes.STRING, allowNull: false, unique: true },
+    name: { type: DataTypes.STRING, allowNull: false, unique: true },
     description: { type: DataTypes.TEXT }
   };
 
