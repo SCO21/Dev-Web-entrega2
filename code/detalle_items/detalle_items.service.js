@@ -14,7 +14,10 @@ class DetalleItemsService {
   }
 
   async updateDetalleItem(id, updates) {
-    const detalleItem = await tbl_detalle_items.findByPk(id);
+    console.log("Updating detalle item with ID:", id);
+    const detalleItem = await tbl_detalle_items.findOne({
+      where: { envioId: id },
+    });
     if (!detalleItem) throw new Error('DetalleItem no encontrado');
     return await detalleItem.update(updates);
   }
