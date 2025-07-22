@@ -12,12 +12,7 @@ function model(sequelize, DataTypes) {
 
   const _model = sequelize.define("tbl_detalle_items", attributes);
 
-  _model.associate = function(models) {
-    _model.belongsTo(models.tbl_envios, {
-      foreignKey: "envioId",
-      onDelete:  "CASCADE"
-    });
-  };
+
 
   return _model;
 }

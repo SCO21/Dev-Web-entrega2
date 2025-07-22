@@ -32,7 +32,7 @@ class EnviosController {
 
   async findOne(req, res) {
     try {
-      const envio = await enviosService.getEnvioById(req.params.id);
+      const envio = await enviosService.getEnvioByGuia(req.params.id);
       if (!envio) return res.status(404).json({ message: 'Envío no encontrado' });
       res.json(envio);
     } catch (err) {

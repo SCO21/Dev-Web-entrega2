@@ -1,16 +1,36 @@
-const { tbl_envios } = require('../db/models');
+const { tbl_envios, tbl_detalle_items } = require('../db/models');
+const detalleItems = require('../detalle_items/detalle_items.service');
 
 class EnviosService {
-  async createEnvio(data) {
-    return await tbl_envios.create(data);
+async createEnvio(data) {
+  const { items, ...envioData } = data;
+
+  const nuevoEnvio = await tbl_envios.create(envioData);
+
+  if (items && items.length > 0) {
+    for (const item of items) {
+      const detalleParaCrear = {
+        ...item,
+        envioId: nuevoEnvio.id 
+      };
+      await this.createDetalleItem(detalleParaCrear); 
+    }
   }
+
+  return nuevoEnvio;
+}
+
 
   async getAllEnvios() {
     return await tbl_envios.findAll();
   }
 
-  async getEnvioById(id) {
-    return await tbl_envios.findByPk(id);
+  async getEnvioByGuia(id) {
+    const envio = await tbl_envios.findOne({
+            where: {numero_guia: id},
+            include: tbl_detalle_items
+        });
+    return envio
   }
 
     async findDetalleItemsByEnvioId(envioId) {
@@ -31,6 +51,12 @@ class EnviosService {
     if (!envio) throw new Error('Envío no encontrado');
     await envio.destroy();
   }
+
+  async createDetalleItem(data) {
+  return await detalleItems.createDetalleItem(data);
+
 }
+}
+
 
 module.exports = new EnviosService();
