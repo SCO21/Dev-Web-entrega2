@@ -22,8 +22,14 @@ async createEnvio(data) {
 
 
   async getAllEnvios() {
-    return await tbl_envios.findAll();
-  }
+      return await tbl_envios.findAll({
+        include: [
+          {
+            model: tbl_detalle_items,
+          }
+        ]
+      });
+    }
 
   async getEnvioByGuia(id) {
     const envio = await tbl_envios.findOne({
